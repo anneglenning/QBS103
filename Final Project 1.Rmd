@@ -1,0 +1,41 @@
+---
+title: "Final Project"
+author: "Annie Glenning"
+date: "2024-07-23"
+output: pdf_document
+---
+```{r}
+getwd() # finding my working directory 
+```
+
+```{r}
+setwd("/Users/annieglenning/Documents/Dartmouth/SU24/QBS_103/Final Project") # set my working directory 
+gene_data <- read.table("QBS103_GSE157103_genes.csv", header = TRUE, sep = ",") # reading in the data
+series_data <- read.table("QBS103_GSE157103_series_matrix.csv", header = TRUE, sep = ",") # reading in the data
+```
+
+## Identify one gene, one continuous covariate, and two categorical covariates 
+
+```{r}
+gene_data[15,] # one gene 
+```
+```{r}
+series_data$age # one continuous covariate 
+series_data$sex # first categorical covariate
+series_data$icu_status # second categorical covariate
+```
+
+## Generate the following three plots using ggplot2 
+
+```{r}
+hist(as.numeric(gene_data[15,]), main = 'Expression Values of the gene AAGAB', xlab = 'IDK') # histogram for the gene 
+```
+
+```{r}
+# scatterplot 
+```
+
+```{r}
+# box plot 
+```
+
