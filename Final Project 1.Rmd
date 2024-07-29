@@ -9,16 +9,29 @@ getwd() # finding my working directory
 ```
 
 ```{r}
-setwd("/Users/annieglenning/Documents/Dartmouth/SU24/QBS_103/Final Project") # set my working directory 
-gene_data <- read.table("QBS103_GSE157103_genes.csv", header = TRUE, sep = ",") # reading in the data
+setwd("/Users/annieglenning/Documents/Dartmouth/SU24/QBS_103/Data") # set my working directory to where the data is stored
+original_gene_data <- read.table("QBS103_GSE157103_genes.csv", header = TRUE, sep = ",") # reading in the data
 series_data <- read.table("QBS103_GSE157103_series_matrix.csv", header = TRUE, sep = ",") # reading in the data
+```
+
+```{r}
+# transposing the data 
+original_gene_data <- as.data.frame(original_gene_data)
+if (is.character(original_gene_data[1, 1])) {
+  gene_data <- t(original_gene_data)
+  colnames(gene_data) <- gene_data[1, ]
+  gene_data <- gene_data[-1, ]
+  gene_data <- as.data.frame(gene_data)
+}
 ```
 
 ## Identify one gene, one continuous covariate, and two categorical covariates 
 
 ```{r}
-gene_data[15,] # one gene 
+AAGAB <- as.numeric(gene_data$AAGAB) # one gene 
+AAGAB
 ```
+
 ```{r}
 series_data$age # one continuous covariate 
 series_data$sex # first categorical covariate
@@ -28,14 +41,51 @@ series_data$icu_status # second categorical covariate
 ## Generate the following three plots using ggplot2 
 
 ```{r}
-hist(as.numeric(gene_data[15,]), main = 'Expression Values of the gene AAGAB', xlab = 'IDK') # histogram for the gene 
+library(tidyverse) 
 ```
 
 ```{r}
-# scatterplot 
+library(ggplot2)
 ```
 
+### Histogram for my Gene selected
+
 ```{r}
-# box plot 
+ggplot(gene_data, aes(x = as.numeric(AAGAB))) +
+  geom_histogram(binwidth = 2, fill = "cadetblue2", color = "cadetblue4") +
+  labs(title = "Histogram of AAGAB Gene", x = "Expression Level", y = "Frequency") +
+  theme_minimal()
+```
+
+### Scatterplot 
+
+```{r}
+ggplot(series_data, aes(x = as.numeric(AAGAB), y = series_data$age, color = factor(icu_status))) +
+  geom_point(size = 2.5, alpha = 0.8) + # size and transparency of the point
+  labs(
+    title = "Scatterplot of the AAGAB Expression Levels vs. Age", 
+    x = "AAGAB Expression Levels", 
+    y = "Age",
+    color = "ICU Status" # legend title
+    ) + 
+  theme(
+    plot.title = element_text(size = 19, face = "bold"), 
+    axis.title = element_text(size = 15, face = "bold"), 
+    legend.title = element_text(size = 12, face = "bold"),  # editing the legend 
+    legend.text = element_text(size = 10), 
+    legend.background = element_rect(fill = "lightgray", color = NA), 
+    legend.key = element_rect(fill = "white", color = "black"),
+    panel.grid.major = element_line(color = "grey80"), # background 
+    panel.grid.minor = element_line(color = "grey90")
+    )
+```
+### Box Plot 
+
+```{r}
+
+# need help
+ggplot(series_data, aes(x=sex, y=as.numeric(AAGAB), fill = sex)) +
+  geom_boxplot() + 
+  scale_fill_manual(values=c("goldenrod1","darkgray"))
 ```
 
