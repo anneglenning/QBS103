@@ -15,7 +15,7 @@ series_data <- read.table("QBS103_GSE157103_series_matrix.csv", header = TRUE, s
 ```
 
 ```{r}
-# transposing the data 
+# transposing the gene data 
 original_gene_data <- as.data.frame(original_gene_data)
 if (is.character(original_gene_data[1, 1])) {
   gene_data <- t(original_gene_data)
@@ -53,16 +53,26 @@ library(ggplot2)
 ```{r}
 ggplot(gene_data, aes(x = as.numeric(AAGAB))) +
   geom_histogram(binwidth = 2, fill = "cadetblue2", color = "cadetblue4") +
-  labs(title = "Histogram of AAGAB Gene", x = "Expression Level", y = "Frequency") +
-  theme_minimal()
+  labs( # labeling the title and axis
+    title = "Histogram of AAGAB Gene Expression Levels", 
+    x = "Expression Level", 
+    y = "Frequency"
+  ) +
+  theme(
+    plot.title = element_text(size = 20, face = "bold"), # title
+    axis.title = element_text(size = 15, face = "bold"), # axis 
+    panel.grid.major = element_line(color = "grey80"), # background 
+    panel.grid.minor = element_line(color = "grey90")
+    )
 ```
 
 ### Scatterplot 
 
 ```{r}
-ggplot(series_data, aes(x = as.numeric(AAGAB), y = series_data$age, color = factor(icu_status))) +
+ggplot(series_data, aes(x = as.numeric(AAGAB), y = series_data$age, 
+                        color = factor(icu_status))) + # seperarting the points by icu status 
   geom_point(size = 2.5, alpha = 0.8) + # size and transparency of the point
-  labs(
+  labs( # labeling the title and axis 
     title = "Scatterplot of the AAGAB Expression Levels vs. Age", 
     x = "AAGAB Expression Levels", 
     y = "Age",
@@ -82,10 +92,45 @@ ggplot(series_data, aes(x = as.numeric(AAGAB), y = series_data$age, color = fact
 ### Box Plot 
 
 ```{r}
-
-# need help
+# aagab vs. sex 
 ggplot(series_data, aes(x=sex, y=as.numeric(AAGAB), fill = sex)) +
-  geom_boxplot() + 
-  scale_fill_manual(values=c("goldenrod1","darkgray"))
+  geom_boxplot() +
+  labs( # labeling the title and axis 
+    title = "Box Plot of AAGAB Expression Levels by Gender",
+    x = "Gender", 
+    y = "AAGAB Expression Levels"
+  ) +
+  theme(
+    plot.title = element_text(size = 20, face = "bold"),
+    axis.title = element_text(size = 15, face = "bold"),
+    legend.title = element_text(size = 12, face = "bold"), # editing the legend 
+    legend.text = element_text(size = 10),
+    legend.background = element_rect(fill = "lightgray", color = NA), 
+    legend.key = element_rect(fill = "white", color = "black"),
+    panel.grid.major = element_line(color = "grey80"), # background 
+    panel.grid.minor = element_line(color = "grey90")
+  ) 
 ```
+
+```{r}
+# aagab vs icu_status
+ggplot(series_data, aes(x=icu_status, y=as.numeric(AAGAB), fill = icu_status)) +
+  geom_boxplot() +
+  labs( # labeling the title and axis 
+    title = "Box Plot of AAGAB Expression Levels by ICU Status",
+    x = "ICU Status", 
+    y = "AAGAB Expression Levels"
+  ) +
+  theme(
+    plot.title = element_text(size = 19, face = "bold"),
+    axis.title = element_text(size = 15, face = "bold"),
+    legend.title = element_text(size = 12, face = "bold"), # editing the legend 
+    legend.text = element_text(size = 10),
+    legend.background = element_rect(fill = "lightgray", color = NA), 
+    legend.key = element_rect(fill = "white", color = "black"),
+    panel.grid.major = element_line(color = "grey80"), # background 
+    panel.grid.minor = element_line(color = "grey90")
+  ) 
+```
+
 
