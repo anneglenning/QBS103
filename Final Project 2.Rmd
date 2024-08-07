@@ -31,31 +31,43 @@ if (is.character(original_gene_data[1, 1])) {
 
 ```{r}
 library(tidyverse) 
-```
-
-```{r}
 library(ggplot2)
+library(stringr)
 ```
 
 ## Histogram 
 
 ## Scatterplot 
-```{r}
-deparse(substitute(series_data$icu_status))[12:]  
-```
-
 
 ## Box Plot
 ```{r}
 box_plot <- function(df, genes, cont_cov, cate_cov1, cate_cov2) {
+  # for labeling purposes 
+  cate_cov1_string <- deparse(substitute(cate_cov1)) # turns the cate_cov1 input into a string
+  cate_cov1_string <- substr(cate_cov1_string, 13, nchar(cate_cov1_string)) # gets rid of series_data$
+  cate_cov2_string <- deparse(substitute(cate_cov2)) # turns the cate_cov2 input into a string
+  cate_cov2_string <- substr(cate_cov2_string, 13, nchar(cate_cov2_string)) # gets rid of series_data$
+  genes_string <- deparse(substitute(genes)) # turns the genes input into a string
+  genes_string <- substr(genes_string, 6, nchar(genes_string)) # gets rid of "list("
+  genes_string <- substr(genes_string, 1, nchar(genes_string) - 1) # gets rid of ")"
+  genes_string <- str_remove_all(genes_string, ",") # removes all ","
+  genes_string <- str_split(genes_string, " ")[[1]] # splits each gene into a lst
+  gene_names <- list() # blank list
+  for (i in seq_along(genes_string)) {
+    word <- substr(genes_string[i], 11, nchar(genes_string[i])) # gets rid of "gene_data$"
+    gene_names[i] <- word # adds the gene name to the blank list 
+  }
+  tracker <- 0
+  
   for (gene in genes) {
-    #print(gene)
+    tracker <- tracker + 1
     bp <- ggplot(df,aes(x = cate_cov1, y = as.numeric(gene), color = cate_cov2)) +
   geom_boxplot() +
   labs( # labeling the title and axis 
-    title = paste0("Box Plot of AAGAB Expression Levels by ICU Status and {Sex}"),
-    x = "ICU Status", 
-    y = "AAGAB Expression Levels"
+    title = paste0("Box Plot of ", gene_names[tracker]," Expression Levels by ", cate_cov1_string, " and ", cate_cov2_string),
+    x = cate_cov1_string, 
+    y = paste0(gene_names[tracker], " Expression Levels"),
+    color = cate_cov2_string # label title 
   ) +
   theme(
     plot.title = element_text(size = 16, face = "bold"),
@@ -70,106 +82,10 @@ box_plot <- function(df, genes, cont_cov, cate_cov1, cate_cov2) {
   print(bp)
   }
 }
-
-box_plot(series_data, list(gene_data$AAGAB, gene_data$AACS), NULL, series_data$icu_status, series_data$sex)
-```
-
-
-```{r}
-box_plot <- function(df, genes, cont_cov, cate_cov1, cate_cov2) {
-  for (gene in genes) {
-    #print(gene)
-    bp <- ggplot(df,aes(x = cate_cov1, y = as.numeric(gene), color = cate_cov2)) +
-    geom_boxplot() +
-    labs( # labeling the title and axis 
-    title = paste0("Box Plot of ", gene , "Expression Levels by ICU Status and {Sex}"),
-    x = "ICU Status", 
-    y = "AAGAB Expression Levels"
-    ) +
-    theme(
-    plot.title = element_text(size = 16, face = "bold"),
-    axis.title = element_text(size = 12, face = "bold"),
-    legend.title = element_text(size = 12, face = "bold"), # editing the legend 
-    legend.text = element_text(size = 10),
-    legend.background = element_rect(fill = "lightgray", color = NA), 
-    legend.key = element_rect(fill = "white", color = "black"),
-    panel.grid.major = element_line(color = "grey80"), # background 
-    panel.grid.minor = element_line(color = "grey90")
-    ) 
-    print(bp)
-  }
-}
-
-box_plot(series_data, list(gene_data$AAGAB, gene_data$AACS), NULL, series_data$icu_status, series_data$sex)
 # HELP
-# Turn gene into a list
 # I DON'T use the continuous covariate in the box plot
-# Fix labels 
 
-box_plot(series_data, list(gene_data$AAGAB, gene_data$AARD), NULL, series_data$icu_status, series_data$sex)
 
+box_plot(series_data, list(gene_data$AAGAB, gene_data$AACS, gene_data$A4GALT), NULL, series_data$icu_status, series_data$sex)
 ```
-
-```{r}
-box_plot <- function(df, genes, cont_cov, cate_cov1, cate_cov2) {
-  for (gene in genes) {
-    boxplot_formatted <- ggplot(df, aes(x = cate_cov1, y = as.numeric(gene), color = cate_cov2)) +
-      geom_boxplot() +
-      labs(
-        title = paste0('Box Plot of ', gene, ' Expression Levels by ', {{cate_cov1}}, ' ICU Status and ', cate_cov2),
-        x = "ICU Status", 
-        y = "Expression Levels"
-      ) +
-      theme(
-        plot.title = element_text(size = 13, face = "bold"),
-        axis.title = element_text(size = 12, face = "bold"),
-        legend.title = element_text(size = 12, face = "bold"),
-        legend.text = element_text(size = 10),
-        legend.background = element_rect(fill = "lightgray", color = NA), 
-        legend.key = element_rect(fill = "white", color = "black"),
-        panel.grid.major = element_line(color = "grey80"),
-        panel.grid.minor = element_line(color = "grey90")
-      )
-    # Print the plot to ensure it is displayed
-    print(boxplot_formatted)
-  }
-}
-
-
-box_plot(series_data, c(gene_data$AAGAB, gene_data$AAAS), NULL, series_data$icu_status, series_data$sex)
-
-```
-
-
-```{r}
-box_plot <- function(df, genes, cont_cov, cate_cov1, cate_cov2) {
-  for (gene in genes) {
-    boxplot_formatted <- ggplot(df, aes(x = .data[[cate_cov1]], y = .data[[gene]], color = .data[[cate_cov2]])) +
-      geom_boxplot() +
-      labs(
-        title = paste0('Box Plot of ', gene, ' Expression Levels by ', cate_cov1, ' and ', cate_cov2),
-        x = cate_cov1,
-        y = paste0(gene, " Expression Levels")
-      ) +
-      theme(
-        plot.title = element_text(size = 13, face = "bold"),
-        axis.title = element_text(size = 12, face = "bold"),
-        legend.title = element_text(size = 12, face = "bold"),
-        legend.text = element_text(size = 10),
-        legend.background = element_rect(fill = "lightgray", color = NA), 
-        legend.key = element_rect(fill = "white", color = "black"),
-        panel.grid.major = element_line(color = "grey80"),
-        panel.grid.minor = element_line(color = "grey90")
-      )
-    print(boxplot_formatted)
-  }
-}
-
-# Example call to the function
-box_plot(series_data, c("AAGAB", "AARD"), NULL, "icu_status", "sex")
-
-
-```
-
-
 
