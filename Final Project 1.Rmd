@@ -69,17 +69,17 @@ ggplot(gene_data, aes(x = as.numeric(AAGAB))) +
 ### Scatterplot 
 
 ```{r}
-ggplot(series_data, aes(x = as.numeric(AAGAB), y = age, 
+ggplot(series_data, aes(x = as.numeric(AAGAB), y = as.numeric(age), 
                         color = factor(icu_status))) + # seperarting the points by icu status 
   geom_point(size = 2.5, alpha = 0.8) + # size and transparency of the point
   labs( # labeling the title and axis 
     title = "Scatterplot of the AAGAB Expression Levels vs. Age", 
     x = "AAGAB Expression Levels", 
-    y = "Age",
+    y = "Age (yrs)",
     color = "ICU Status" # legend title
     ) + 
   theme(
-    plot.title = element_text(size = 19, face = "bold"), 
+    plot.title = element_text(size = 16, face = "bold"), 
     axis.title = element_text(size = 15, face = "bold"), 
     legend.title = element_text(size = 12, face = "bold"),  # editing the legend 
     legend.text = element_text(size = 10), 
@@ -87,7 +87,7 @@ ggplot(series_data, aes(x = as.numeric(AAGAB), y = age,
     legend.key = element_rect(fill = "white", color = "black"),
     panel.grid.major = element_line(color = "grey80"), # background 
     panel.grid.minor = element_line(color = "grey90")
-    )
+    ) 
 ```
 ### Box Plot 
 
