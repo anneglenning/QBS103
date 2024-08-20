@@ -1,0 +1,127 @@
+---
+title: "Final Project 3"
+author: "Annie Glenning"
+date: "2024-08-19"
+output: pdf_document
+---
+
+```{r}
+setwd("/Users/annieglenning/Documents/Dartmouth/SU24/QBS_103/Data") # set my working directory to where the data is stored
+original_gene_data <- read.table("QBS103_GSE157103_genes.csv", header = TRUE, sep = ",") # reading in the data
+series_data <- read.table("QBS103_GSE157103_series_matrix.csv", header = TRUE, sep = ",") # reading in the data
+```
+
+```{r}
+# transposing the gene data 
+original_gene_data <- as.data.frame(original_gene_data)
+if (is.character(original_gene_data[1, 1])) {
+  gene_data <- t(original_gene_data)
+  colnames(gene_data) <- gene_data[1, ]
+  gene_data <- gene_data[-1, ]
+  gene_data <- as.data.frame(gene_data)
+}
+```
+
+## Identify one gene, one continuous covariate, and two categorical covariates 
+
+```{r}
+AAGAB <- as.numeric(gene_data$AAGAB) # one gene 
+```
+
+## Info for Table of Summary Statistics
+
+### sex
+```{r}
+# percent
+length(series_data$age[series_data$sex == ' male'])/length(series_data$age)*100
+# percent
+length(series_data$age[series_data$sex == ' female'])/length(series_data$age)*100
+length(series_data$age[series_data$sex == ' unknown'])/length(series_data$age)*100
+```
+
+```{r}
+mean(as.numeric(series_data$age[series_data$sex == ' male']), na.rm = TRUE) # note getting rid of >89
+sd(as.numeric(series_data$age[series_data$sex == ' male']), na.rm = TRUE)
+mean(as.numeric(series_data$age[series_data$sex == ' female']), na.rm = TRUE) 
+sd(as.numeric(series_data$age[series_data$sex == ' female']), na.rm = TRUE)
+mean(as.numeric(series_data$age[series_data$sex == ' unknown']), na.rm = TRUE) 
+sd(as.numeric(series_data$age[series_data$sex == ' unknown']), na.rm = TRUE)
+```
+
+```{r}
+mean(as.numeric(series_data$ferritin.ng.ml.[series_data$sex == ' male']), na.rm = TRUE) # 11 unknown
+sd(as.numeric(series_data$ferritin.ng.ml.[series_data$sex == ' male']), na.rm = TRUE)
+mean(as.numeric(series_data$ferritin.ng.ml.[series_data$sex == ' female']), na.rm = TRUE) # 4 unknown
+sd(as.numeric(series_data$ferritin.ng.ml.[series_data$sex == ' female']), na.rm = TRUE)
+series_data$ferritin.ng.ml.[series_data$sex == ' unknown'] # 1 unknown
+```
+
+```{r}
+mean(as.numeric(series_data$procalcitonin.ng.ml..[series_data$sex == ' male']), na.rm = TRUE) # 14 unknown
+sd(as.numeric(series_data$procalcitonin.ng.ml..[series_data$sex == ' male']), na.rm = TRUE)
+mean(as.numeric(series_data$procalcitonin.ng.ml..[series_data$sex == ' female']), na.rm = TRUE) # 9 unknown
+sd(as.numeric(series_data$procalcitonin.ng.ml..[series_data$sex == ' female']), na.rm = TRUE)
+series_data$procalcitonin.ng.ml..[series_data$sex == ' unknown'] # 1 unknown
+```
+
+### icu_status
+```{r}
+length(series_data$age[series_data$icu_status == ' yes'])/length(series_data$age) *100
+length(series_data$age[series_data$icu_status == ' no'])/length(series_data$age) *100
+```
+
+```{r}
+mean(as.numeric(series_data$age[series_data$icu_status == ' yes']), na.rm = TRUE) 
+sd(as.numeric(series_data$age[series_data$icu_status == ' yes']), na.rm = TRUE)
+mean(as.numeric(series_data$age[series_data$icu_status == ' no'] ), na.rm = TRUE) # gets rid of " :" and 2 " >89"
+sd(as.numeric(series_data$age[series_data$icu_status == ' no']), na.rm = TRUE)
+```
+
+```{r}
+mean(as.numeric(series_data$ferritin.ng.ml.[series_data$icu_status == ' yes']), na.rm = TRUE)  # 7 unknowns 
+sd(as.numeric(series_data$ferritin.ng.ml.[series_data$icu_status == ' yes']), na.rm = TRUE)
+mean(as.numeric(series_data$ferritin.ng.ml.[series_data$icu_status == ' no']), na.rm = TRUE)  # 9 unknowns 
+sd(as.numeric(series_data$ferritin.ng.ml.[series_data$icu_status == ' no']), na.rm = TRUE)
+```
+
+```{r}
+mean(as.numeric(series_data$procalcitonin.ng.ml..[series_data$icu_status == ' yes']), na.rm = TRUE)  # 8 unknowns 
+sd(as.numeric(series_data$procalcitonin.ng.ml..[series_data$icu_status == ' yes']), na.rm = TRUE)
+mean(as.numeric(series_data$procalcitonin.ng.ml..[series_data$icu_status == ' no']), na.rm = TRUE)  # 16 unknowns 
+sd(as.numeric(series_data$procalcitonin.ng.ml..[series_data$icu_status == ' no']), na.rm = TRUE) 
+```
+
+### disease_status
+```{r}
+length(series_data$age[series_data$disease_status == "disease state: COVID-19"])/length(series_data$age) *100
+length(series_data$age[series_data$disease_status == "disease state: non-COVID-19"])/length(series_data$age) *100
+```
+
+```{r}
+mean(as.numeric(series_data$age[series_data$disease_status == "disease state: COVID-19"]), na.rm = TRUE) # " :" and " >89"
+sd(as.numeric(series_data$age[series_data$disease_status == "disease state: COVID-19"]), na.rm = TRUE)
+mean(as.numeric(series_data$age[series_data$disease_status == "disease state: non-COVID-19"]), na.rm = TRUE) # gets rid of " >89"
+sd(as.numeric(series_data$age[series_data$disease_status == "disease state: non-COVID-19"]), na.rm = TRUE)
+```
+
+```{r}
+mean(as.numeric(series_data$ferritin.ng.ml.[series_data$disease_status == "disease state: COVID-19"]), na.rm = TRUE) # 6 unknowns 
+sd(as.numeric(series_data$ferritin.ng.ml.[series_data$disease_status == "disease state: COVID-19"]), na.rm = TRUE)
+mean(as.numeric(series_data$ferritin.ng.ml.[series_data$disease_status == "disease state: non-COVID-19"]), na.rm = TRUE) # 10 unknowns 
+sd(as.numeric(series_data$ferritin.ng.ml.[series_data$disease_status == "disease state: non-COVID-19"]), na.rm = TRUE)
+```
+
+```{r}
+mean(as.numeric(series_data$procalcitonin.ng.ml..[series_data$disease_status == "disease state: COVID-19"]), na.rm = TRUE) # 13 unknowns 
+sd(as.numeric(series_data$procalcitonin.ng.ml..[series_data$disease_status == "disease state: COVID-19"]), na.rm = TRUE)
+mean(as.numeric(series_data$procalcitonin.ng.ml..[series_data$disease_status == "disease state: non-COVID-19"]), na.rm = TRUE) # 11 unknowns 
+sd(as.numeric(series_data$procalcitonin.ng.ml..[series_data$disease_status == "disease state: non-COVID-19"]), na.rm = TRUE)
+```
+
+## New Plot Type 
+
+```{r}
+# Density plots with semi-transparent fill
+ggplot(dat, aes(x=rating, fill=cond)) + geom_density(alpha=.3)
+```
+

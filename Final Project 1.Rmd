@@ -29,7 +29,6 @@ if (is.character(original_gene_data[1, 1])) {
 
 ```{r}
 AAGAB <- as.numeric(gene_data$AAGAB) # one gene 
-AAGAB
 ```
 
 ```{r}
