@@ -118,10 +118,162 @@ mean(as.numeric(series_data$procalcitonin.ng.ml..[series_data$disease_status == 
 sd(as.numeric(series_data$procalcitonin.ng.ml..[series_data$disease_status == "disease state: non-COVID-19"]), na.rm = TRUE)
 ```
 
+## Finalizing Histogram
+
+```{r}
+library(tidyverse) 
+```
+
+```{r}
+library(ggplot2)
+```
+
+
+```{r}
+ggplot(gene_data, aes(x = as.numeric(AAGAB))) +
+  geom_histogram(binwidth = 2, fill = "lightseagreen", color = "aquamarine4") +
+  labs( # labeling the title and axis
+    title = "Histogram of AAGAB Gene Expression Levels", 
+    x = "Expression Level", 
+    y = "Frequency"
+  ) +
+  theme(
+    plot.title = element_text(size = 19, face = "bold"), # title
+    axis.title = element_text(size = 15, face = "bold"), # axis 
+    panel.grid.major = element_line(color = "grey80"), # background 
+    panel.grid.minor = element_line(color = "grey90")
+    )
+```
+
+## Finalizing Scatterplot
+
+```{r}
+ggplot(series_data, aes(x = as.numeric(AAGAB), y = as.numeric(age), 
+                        color = factor(icu_status))) + # seperarting the points by icu status 
+  geom_point(size = 2.5, alpha = 0.8) + # size and transparency of the point
+  labs( # labeling the title and axis 
+    title = "Scatterplot of the AAGAB Expression Levels vs. Age", 
+    x = "AAGAB Expression Levels", 
+    y = "Age (yrs)",
+    color = "ICU Status" # legend title
+    ) + 
+  scale_color_manual(values = c(" yes" = "palevioletred1", " no" = "royalblue1")) +  # setting the colors 
+  theme(
+    plot.title = element_text(size = 16, face = "bold"), 
+    axis.title = element_text(size = 15, face = "bold"), 
+    legend.title = element_text(size = 12, face = "bold"),  # editing the legend 
+    legend.text = element_text(size = 10), 
+    legend.background = element_rect(fill = "lightgray", color = NA), 
+    legend.key = element_rect(fill = "white", color = "black"),
+    panel.grid.major = element_line(color = "grey80"), # background 
+    panel.grid.minor = element_line(color = "grey90")
+    ) 
+```
+## Finalizing Box Plot 
+
+```{r}
+ggplot(series_data,aes(x = icu_status, y = as.numeric(AAGAB), color = sex)) +
+  geom_boxplot() +
+  labs( # labeling the title and axis 
+    title = "Box Plot of AAGAB Expression Levels by ICU Status and Sex",
+    x = "ICU Status", 
+    y = "AAGAB Expression Levels",
+    color = "Sex"
+  ) +
+  scale_color_manual(values = c(" female" = "palevioletred1", " male" = "royalblue1", " unknown" = "lightseagreen")) +  # setting the colors 
+  theme(
+    plot.title = element_text(size = 14, face = "bold"),
+    axis.title = element_text(size = 12, face = "bold"),
+    legend.title = element_text(size = 12, face = "bold"), # editing the legend 
+    legend.text = element_text(size = 10),
+    legend.background = element_rect(fill = "lightgray", color = NA), 
+    legend.key = element_rect(fill = "white", color = "black"),
+    panel.grid.major = element_line(color = "grey80"), # background 
+    panel.grid.minor = element_line(color = "grey90")
+  ) 
+```
+```{r}
+ggplot(series_data,aes(x = disease_status, y = as.numeric(AAGAB), color = sex)) +
+  geom_boxplot() +
+  labs( # labeling the title and axis 
+    title = "Box Plot of AAGAB Expression Levels by Disease Status and Sex",
+    x = "Disease Status", 
+    y = "AAGAB Expression Levels",
+    color = "Sex"
+  ) +
+  scale_color_manual(values = c(" female" = "palevioletred1", " male" = "royalblue1", " unknown" = "lightseagreen")) +  # setting the colors 
+  theme(
+    plot.title = element_text(size = 13, face = "bold"),
+    axis.title = element_text(size = 12, face = "bold"),
+    legend.title = element_text(size = 12, face = "bold"), # editing the legend 
+    legend.text = element_text(size = 10),
+    legend.background = element_rect(fill = "lightgray", color = NA), 
+    legend.key = element_rect(fill = "white", color = "black"),
+    panel.grid.major = element_line(color = "grey80"), # background 
+    panel.grid.minor = element_line(color = "grey90")
+  ) 
+```
+
+
+
 ## New Plot Type 
 
 ```{r}
+#series_data$sex_disease_status <- paste(series_data$sex, series_data$disease_status, sep = " & ")
+```
+
+```{r}
 # Density plots with semi-transparent fill
-ggplot(dat, aes(x=rating, fill=cond)) + geom_density(alpha=.3)
+#ggplot(series_data, aes(x=as.numeric(age), fill=icu_status)) + geom_density(alpha=.3)
+#ggplot(series_data, aes(x=as.numeric(ferritin), fill=disease_status)) + geom_density(alpha=.3) 
+#ggplot(series_data, aes(x=as.numeric(ferritin), fill=sex)) + geom_density(alpha=.3) 
+#ggplot(series_data, aes(x=as.numeric(ferritin), fill=sex_disease_status)) + geom_density(alpha=.3) 
+```
+
+```{r}
+mu <- series_data %>%
+  group_by(disease_status) %>%
+  summarize(grp.mean = mean(ferritin.ng.ml., na.rm = TRUE))
+```
+
+
+```{r}
+# Density plots with semi-transparent fill
+ggplot(series_data, aes(x=as.numeric(series_data$ferritin.ng.ml.), fill=series_data$disease_status)) + geom_density(alpha=.3) +
+  labs( # labeling the title and axis 
+    title = "Density Plot of Ferritin Levels by Disease Status",
+    x = "Ferritin Levels (ng/ml)", 
+    y = "Frequency",
+    fill = "Disease Status"
+  ) +
+  scale_fill_manual(values = c("disease state: COVID-19" = "lightseagreen", "disease state: non-COVID-19" = "palevioletred1")) +  # setting the colors 
+  #geom_vline(data=mu, aes(xintercept=grp.mean, color=disease_status),
+  #           linetype="dashed") +
+  theme(
+    plot.title = element_text(size = 16, face = "bold"),
+    axis.title = element_text(size = 12, face = "bold"),
+    legend.title = element_text(size = 12, face = "bold"), # editing the legend 
+    legend.text = element_text(size = 10),
+    legend.background = element_rect(fill = "lightgray", color = NA), 
+    legend.key = element_rect(fill = "white", color = "black"),
+    panel.grid.major = element_line(color = "grey80"), # background 
+    panel.grid.minor = element_line(color = "grey90")
+  ) 
+```
+
+## Heatmap
+
+```{r}
+#install.packages('pheatmap')
+library(pheatmap)
+```
+
+```{r}
+# at least 10 genes 
+heatmap_genes = c(gene_data$AACS, gene_data$AAGAB, gene_data$A1BG, gene_data$ABI2, gene_data$ABI1, gene_data$ABHD6, gene_data$ABHD5, gene_data$AAK1, gene_data$ABHD2, gene_data$ABHD18)
+# generating the heatmap 
+pheatmap(as.numeric(heatmap_genes),
+         cluster_rows = F,
+         cluster_cols = F)
 ```
 
