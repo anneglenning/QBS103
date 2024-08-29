@@ -30,92 +30,148 @@ AAGAB <- as.numeric(gene_data$AAGAB) # one gene
 
 ## Info for Table of Summary Statistics
 
+```{r}
+# Install table1 package if not already installed
+#install.packages("table1")
+
+# Load required packages
+library(table1)
+library(dplyr)
+```
+
+```{r}
+# Example dataset preparation (you should replace this with your actual data)
+# Assuming `data` is your data frame and contains the relevant variables
+
+# Convert categorical variables to factors
+#table_data <- series_data %>%
+#  mutate(sex = factor(sex),
+#         disease_status = factor(disease_status),
+#         icu_status = factor(icu_status))  # Add another categorical variable here
+
+# Example of selecting 3 continuous variables and 3 categorical variables
+#continuous_vars <- c("age", "ferritin.ng.ml.", "procalcitonin.ng.ml..")  
+#categorical_vars <- c("sex", "disease_status", "icu_status")  
+```
+
+```{r}
+# Define a custom label for your variables if desired
+#labels <- list(
+#  age = "Age (years)",
+#  ferritin.ng.ml. = "Ferritin (ng/ml)",
+#  procalcitonin.ng.ml.. = "Procalcitonin (ng/ml)",
+#  sex = "Sex",
+#  disease_status = "Disease Status",
+#  icu_status = "ICU Status" 
+#)
+
+# Create the table stratified by a categorical variable, e.g., `disease_status`
+#table <- table1(~ age + ferritin.ng.ml. + procalcitonin.ng.ml.. + sex + icu_status | disease_status, 
+#                data = table_data, 
+#                render.categorical = function(x) #sprintf("%d (%0.1f%%)", sum(x), mean(x) * 100), 
+#                render.continuous = function(x) {
+#                    if (length(x) <= 5) {
+#                        sprintf("%0.1f [%0.1f, %0.1f]", median(x), quantile(x, 0.25), quantile(x, 0.75))
+#                    } else {
+#                        sprintf("%0.1f (%.1f)", mean(x), sd(x))
+#                    }
+#                },
+#                overall = FALSE,  # Set to TRUE if you want overall summary stats
+#                topclass = "Rtable1-zebra")
+
+```
+
+
+
+
+
+
 ### sex
 ```{r}
 # percent
-length(series_data$age[series_data$sex == ' male'])/length(series_data$age)*100
+#length(series_data$age[series_data$sex == ' male'])/length(series_data$age)*100
 # percent
-length(series_data$age[series_data$sex == ' female'])/length(series_data$age)*100
-length(series_data$age[series_data$sex == ' unknown'])/length(series_data$age)*100
+#length(series_data$age[series_data$sex == ' female'])/length(series_data$age)*100
+#length(series_data$age[series_data$sex == ' unknown'])/length(series_data$age)*100
 ```
 
 ```{r}
-mean(as.numeric(series_data$age[series_data$sex == ' male']), na.rm = TRUE) # note getting rid of >89
-sd(as.numeric(series_data$age[series_data$sex == ' male']), na.rm = TRUE)
-mean(as.numeric(series_data$age[series_data$sex == ' female']), na.rm = TRUE) 
-sd(as.numeric(series_data$age[series_data$sex == ' female']), na.rm = TRUE)
-mean(as.numeric(series_data$age[series_data$sex == ' unknown']), na.rm = TRUE) 
-sd(as.numeric(series_data$age[series_data$sex == ' unknown']), na.rm = TRUE)
+#mean(as.numeric(series_data$age[series_data$sex == ' male']), na.rm = TRUE) # note getting rid of >89
+#sd(as.numeric(series_data$age[series_data$sex == ' male']), na.rm = TRUE)
+#mean(as.numeric(series_data$age[series_data$sex == ' female']), na.rm = TRUE) 
+#sd(as.numeric(series_data$age[series_data$sex == ' female']), na.rm = TRUE)
+#mean(as.numeric(series_data$age[series_data$sex == ' unknown']), na.rm = TRUE) 
+#sd(as.numeric(series_data$age[series_data$sex == ' unknown']), na.rm = TRUE)
 ```
 
 ```{r}
-mean(as.numeric(series_data$ferritin.ng.ml.[series_data$sex == ' male']), na.rm = TRUE) # 11 unknown
-sd(as.numeric(series_data$ferritin.ng.ml.[series_data$sex == ' male']), na.rm = TRUE)
-mean(as.numeric(series_data$ferritin.ng.ml.[series_data$sex == ' female']), na.rm = TRUE) # 4 unknown
-sd(as.numeric(series_data$ferritin.ng.ml.[series_data$sex == ' female']), na.rm = TRUE)
-series_data$ferritin.ng.ml.[series_data$sex == ' unknown'] # 1 unknown
+#mean(as.numeric(series_data$ferritin.ng.ml.[series_data$sex == ' male']), na.rm = TRUE) # 11 unknown
+#sd(as.numeric(series_data$ferritin.ng.ml.[series_data$sex == ' male']), na.rm = TRUE)
+#mean(as.numeric(series_data$ferritin.ng.ml.[series_data$sex == ' female']), na.rm = TRUE) # 4 unknown
+#sd(as.numeric(series_data$ferritin.ng.ml.[series_data$sex == ' female']), na.rm = TRUE)
+#series_data$ferritin.ng.ml.[series_data$sex == ' unknown'] # 1 unknown
 ```
 
 ```{r}
-mean(as.numeric(series_data$procalcitonin.ng.ml..[series_data$sex == ' male']), na.rm = TRUE) # 14 unknown
-sd(as.numeric(series_data$procalcitonin.ng.ml..[series_data$sex == ' male']), na.rm = TRUE)
-mean(as.numeric(series_data$procalcitonin.ng.ml..[series_data$sex == ' female']), na.rm = TRUE) # 9 unknown
-sd(as.numeric(series_data$procalcitonin.ng.ml..[series_data$sex == ' female']), na.rm = TRUE)
-series_data$procalcitonin.ng.ml..[series_data$sex == ' unknown'] # 1 unknown
+#mean(as.numeric(series_data$procalcitonin.ng.ml..[series_data$sex == ' male']), na.rm = TRUE) # 14 unknown
+#sd(as.numeric(series_data$procalcitonin.ng.ml..[series_data$sex == ' male']), na.rm = TRUE)
+#mean(as.numeric(series_data$procalcitonin.ng.ml..[series_data$sex == ' female']), na.rm = TRUE) # 9 unknown
+#sd(as.numeric(series_data$procalcitonin.ng.ml..[series_data$sex == ' female']), na.rm = TRUE)
+#series_data$procalcitonin.ng.ml..[series_data$sex == ' unknown'] # 1 unknown
 ```
 
 ### icu_status
 ```{r}
-length(series_data$age[series_data$icu_status == ' yes'])/length(series_data$age) *100
-length(series_data$age[series_data$icu_status == ' no'])/length(series_data$age) *100
+#length(series_data$age[series_data$icu_status == ' yes'])/length(series_data$age) *100
+#length(series_data$age[series_data$icu_status == ' no'])/length(series_data$age) *100
 ```
 
 ```{r}
-mean(as.numeric(series_data$age[series_data$icu_status == ' yes']), na.rm = TRUE) 
-sd(as.numeric(series_data$age[series_data$icu_status == ' yes']), na.rm = TRUE)
-mean(as.numeric(series_data$age[series_data$icu_status == ' no'] ), na.rm = TRUE) # gets rid of " :" and 2 " >89"
-sd(as.numeric(series_data$age[series_data$icu_status == ' no']), na.rm = TRUE)
+#mean(as.numeric(series_data$age[series_data$icu_status == ' yes']), na.rm = TRUE) 
+#sd(as.numeric(series_data$age[series_data$icu_status == ' yes']), na.rm = TRUE)
+#mean(as.numeric(series_data$age[series_data$icu_status == ' no'] ), na.rm = TRUE) # gets rid of " :" and 2 " >89"
+#sd(as.numeric(series_data$age[series_data$icu_status == ' no']), na.rm = TRUE)
 ```
 
 ```{r}
-mean(as.numeric(series_data$ferritin.ng.ml.[series_data$icu_status == ' yes']), na.rm = TRUE)  # 7 unknowns 
-sd(as.numeric(series_data$ferritin.ng.ml.[series_data$icu_status == ' yes']), na.rm = TRUE)
-mean(as.numeric(series_data$ferritin.ng.ml.[series_data$icu_status == ' no']), na.rm = TRUE)  # 9 unknowns 
-sd(as.numeric(series_data$ferritin.ng.ml.[series_data$icu_status == ' no']), na.rm = TRUE)
+#mean(as.numeric(series_data$ferritin.ng.ml.[series_data$icu_status == ' yes']), na.rm = TRUE)  # 7 unknowns 
+#sd(as.numeric(series_data$ferritin.ng.ml.[series_data$icu_status == ' yes']), na.rm = TRUE)
+#mean(as.numeric(series_data$ferritin.ng.ml.[series_data$icu_status == ' no']), na.rm = TRUE)  # 9 unknowns 
+#sd(as.numeric(series_data$ferritin.ng.ml.[series_data$icu_status == ' no']), na.rm = TRUE)
 ```
 
 ```{r}
-mean(as.numeric(series_data$procalcitonin.ng.ml..[series_data$icu_status == ' yes']), na.rm = TRUE)  # 8 unknowns 
-sd(as.numeric(series_data$procalcitonin.ng.ml..[series_data$icu_status == ' yes']), na.rm = TRUE)
-mean(as.numeric(series_data$procalcitonin.ng.ml..[series_data$icu_status == ' no']), na.rm = TRUE)  # 16 unknowns 
-sd(as.numeric(series_data$procalcitonin.ng.ml..[series_data$icu_status == ' no']), na.rm = TRUE) 
+#mean(as.numeric(series_data$procalcitonin.ng.ml..[series_data$icu_status == ' yes']), na.rm = TRUE)  # 8 unknowns 
+#sd(as.numeric(series_data$procalcitonin.ng.ml..[series_data$icu_status == ' yes']), na.rm = TRUE)
+#mean(as.numeric(series_data$procalcitonin.ng.ml..[series_data$icu_status == ' no']), na.rm = TRUE)  # 16 unknowns 
+#sd(as.numeric(series_data$procalcitonin.ng.ml..[series_data$icu_status == ' no']), na.rm = TRUE) 
 ```
 
 ### disease_status
 ```{r}
-length(series_data$age[series_data$disease_status == "disease state: COVID-19"])/length(series_data$age) *100
-length(series_data$age[series_data$disease_status == "disease state: non-COVID-19"])/length(series_data$age) *100
+#length(series_data$age[series_data$disease_status == "disease state: COVID-19"])/length(series_data$age) *100
+#length(series_data$age[series_data$disease_status == "disease state: non-COVID-19"])/length(series_data$age) *100
 ```
 
 ```{r}
-mean(as.numeric(series_data$age[series_data$disease_status == "disease state: COVID-19"]), na.rm = TRUE) # " :" and " >89"
-sd(as.numeric(series_data$age[series_data$disease_status == "disease state: COVID-19"]), na.rm = TRUE)
-mean(as.numeric(series_data$age[series_data$disease_status == "disease state: non-COVID-19"]), na.rm = TRUE) # gets rid of " >89"
-sd(as.numeric(series_data$age[series_data$disease_status == "disease state: non-COVID-19"]), na.rm = TRUE)
+#mean(as.numeric(series_data$age[series_data$disease_status == "disease state: COVID-19"]), na.rm = TRUE) # " :" and " >89"
+#sd(as.numeric(series_data$age[series_data$disease_status == "disease state: COVID-19"]), na.rm = TRUE)
+#mean(as.numeric(series_data$age[series_data$disease_status == "disease state: non-COVID-19"]), na.rm = TRUE) # gets rid of " >89"
+#sd(as.numeric(series_data$age[series_data$disease_status == "disease state: non-COVID-19"]), na.rm = TRUE)
 ```
 
 ```{r}
-mean(as.numeric(series_data$ferritin.ng.ml.[series_data$disease_status == "disease state: COVID-19"]), na.rm = TRUE) # 6 unknowns 
-sd(as.numeric(series_data$ferritin.ng.ml.[series_data$disease_status == "disease state: COVID-19"]), na.rm = TRUE)
-mean(as.numeric(series_data$ferritin.ng.ml.[series_data$disease_status == "disease state: non-COVID-19"]), na.rm = TRUE) # 10 unknowns 
-sd(as.numeric(series_data$ferritin.ng.ml.[series_data$disease_status == "disease state: non-COVID-19"]), na.rm = TRUE)
+#mean(as.numeric(series_data$ferritin.ng.ml.[series_data$disease_status == "disease state: COVID-19"]), na.rm = TRUE) # 6 unknowns 
+#sd(as.numeric(series_data$ferritin.ng.ml.[series_data$disease_status == "disease state: COVID-19"]), na.rm = TRUE)
+#mean(as.numeric(series_data$ferritin.ng.ml.[series_data$disease_status == "disease state: non-COVID-19"]), na.rm = TRUE) # 10 unknowns 
+#sd(as.numeric(series_data$ferritin.ng.ml.[series_data$disease_status == "disease state: non-COVID-19"]), na.rm = TRUE)
 ```
 
 ```{r}
-mean(as.numeric(series_data$procalcitonin.ng.ml..[series_data$disease_status == "disease state: COVID-19"]), na.rm = TRUE) # 13 unknowns 
-sd(as.numeric(series_data$procalcitonin.ng.ml..[series_data$disease_status == "disease state: COVID-19"]), na.rm = TRUE)
-mean(as.numeric(series_data$procalcitonin.ng.ml..[series_data$disease_status == "disease state: non-COVID-19"]), na.rm = TRUE) # 11 unknowns 
-sd(as.numeric(series_data$procalcitonin.ng.ml..[series_data$disease_status == "disease state: non-COVID-19"]), na.rm = TRUE)
+#mean(as.numeric(series_data$procalcitonin.ng.ml..[series_data$disease_status == "disease state: COVID-19"]), na.rm = TRUE) # 13 unknowns 
+#sd(as.numeric(series_data$procalcitonin.ng.ml..[series_data$disease_status == "disease state: COVID-19"]), na.rm = TRUE)
+#mean(as.numeric(series_data$procalcitonin.ng.ml..[series_data$disease_status == "disease state: non-COVID-19"]), na.rm = TRUE) # 11 unknowns 
+#sd(as.numeric(series_data$procalcitonin.ng.ml..[series_data$disease_status == "disease state: non-COVID-19"]), na.rm = TRUE)
 ```
 
 ## Finalizing Histogram
@@ -193,25 +249,25 @@ ggplot(series_data,aes(x = icu_status, y = as.numeric(AAGAB), color = sex)) +
   ) 
 ```
 ```{r}
-ggplot(series_data,aes(x = disease_status, y = as.numeric(AAGAB), color = sex)) +
-  geom_boxplot() +
-  labs( # labeling the title and axis 
-    title = "Box Plot of AAGAB Expression Levels by Disease Status and Sex",
-    x = "Disease Status", 
-    y = "AAGAB Expression Levels",
-    color = "Sex"
-  ) +
-  scale_color_manual(values = c(" female" = "palevioletred1", " male" = "royalblue1", " unknown" = "lightseagreen")) +  # setting the colors 
-  theme(
-    plot.title = element_text(size = 13, face = "bold"),
-    axis.title = element_text(size = 12, face = "bold"),
-    legend.title = element_text(size = 12, face = "bold"), # editing the legend 
-    legend.text = element_text(size = 10),
-    legend.background = element_rect(fill = "lightgray", color = NA), 
-    legend.key = element_rect(fill = "white", color = "black"),
-    panel.grid.major = element_line(color = "grey80"), # background 
-    panel.grid.minor = element_line(color = "grey90")
-  ) 
+#ggplot(series_data,aes(x = disease_status, y = as.numeric(AAGAB), color = sex)) +
+#  geom_boxplot() +
+#  labs( # labeling the title and axis 
+#    title = "Box Plot of AAGAB Expression Levels by Disease Status and Sex",
+#    x = "Disease Status", 
+#    y = "AAGAB Expression Levels",
+#    color = "Sex"
+#  ) +
+#  scale_color_manual(values = c(" female" = "palevioletred1", " male" = "royalblue1", " unknown" = "lightseagreen")) +  # setting the colors 
+#  theme(
+#    plot.title = element_text(size = 13, face = "bold"),
+#    axis.title = element_text(size = 12, face = "bold"),
+#    legend.title = element_text(size = 12, face = "bold"), # editing the legend 
+#    legend.text = element_text(size = 10),
+#    legend.background = element_rect(fill = "lightgray", color = NA), 
+#    legend.key = element_rect(fill = "white", color = "black"),
+#    panel.grid.major = element_line(color = "grey80"), # background 
+#    panel.grid.minor = element_line(color = "grey90")
+#  ) 
 ```
 
 
@@ -235,6 +291,12 @@ mu <- series_data %>%
   group_by(disease_status) %>%
   summarize(grp.mean = mean(ferritin.ng.ml., na.rm = TRUE))
 ```
+```{r}
+#mean(as.numeric(series_data$ferritin.ng.ml.[series_data$disease_status == "disease state: COVID-19"]), na.rm = TRUE) # 6 unknown 
+#sd(as.numeric(series_data$ferritin.ng.ml.[series_data$disease_status == "disease state: COVID-19"]), na.rm = TRUE)
+#mean(as.numeric(series_data$ferritin.ng.ml.[series_data$disease_status == "disease state: non-COVID-19"]), na.rm = TRUE) # 10 unknowns
+#sd(as.numeric(series_data$ferritin.ng.ml.[series_data$disease_status == "disease state: non-COVID-19"]), na.rm = TRUE)
+```
 
 
 ```{r}
@@ -247,8 +309,8 @@ ggplot(series_data, aes(x=as.numeric(series_data$ferritin.ng.ml.), fill=series_d
     fill = "Disease Status"
   ) +
   scale_fill_manual(values = c("disease state: COVID-19" = "lightseagreen", "disease state: non-COVID-19" = "palevioletred1")) +  # setting the colors 
-  #geom_vline(data=mu, aes(xintercept=grp.mean, color=disease_status),
-  #           linetype="dashed") +
+  annotate(geom = 'text',x = 2500,y = 0.0016,label = 'Mean (sd): 250.5 (238.208)',color = 'palevioletred1') +
+  annotate(geom = 'text',x = 3500,y = 0.0006,label = 'Mean (sd): 932.7553 (1094.042)',color = 'lightseagreen') +
   theme(
     plot.title = element_text(size = 16, face = "bold"),
     axis.title = element_text(size = 12, face = "bold"),
@@ -268,12 +330,31 @@ ggplot(series_data, aes(x=as.numeric(series_data$ferritin.ng.ml.), fill=series_d
 library(pheatmap)
 ```
 
-```{r}
-# at least 10 genes 
-heatmap_genes = c(gene_data$AACS, gene_data$AAGAB, gene_data$A1BG, gene_data$ABI2, gene_data$ABI1, gene_data$ABHD6, gene_data$ABHD5, gene_data$AAK1, gene_data$ABHD2, gene_data$ABHD18)
-# generating the heatmap 
-pheatmap(as.numeric(heatmap_genes),
-         cluster_rows = F,
-         cluster_cols = F)
-```
 
+```{r}
+heatmap_gene_data <- gene_data %>%
+  mutate(across(c(AAGAB, ABI1, ABHD5, ABHD2, AAAS, AAMDC, AAMP, AAR2, AARS1, AARSD1, AASDHPPT, AATF, AATK, ABAT), as.numeric))
+
+# convert into a matrix
+heatmap_matrix <- as.matrix(heatmap_gene_data[, c("AAGAB", "ABI1", "ABHD5", "ABHD2", "AAAS", "AAMDC", "AAMP", "AAR2", "AARS1", "AARSD1", "AASDHPPT", "AATF", "AATK", "ABAT")])
+
+# adding tracking bars
+tracking <- data.frame(
+  ICU_Status = factor(series_data$icu_status), 
+  Disease_Status = factor(series_data$disease_status)
+)
+rownames(tracking) <- rownames(heatmap_gene_data)
+
+# plotting heatmap
+pheatmap(
+  heatmap_matrix, 
+  cluster_rows = TRUE,
+  cluster_cols = TRUE,
+  annotation_row = tracking,
+  show_rownames = TRUE,
+  show_colnames = TRUE,
+  fontsize_row = 1,
+  #height = 10,
+  #cellheight = 1
+)
+```
